@@ -1,7 +1,7 @@
 import {decodeJwt} from './token.js'
 import JsonResponse from "./response.js";
 
-export const jwtBearer = async (req, res, next) => {
+const jwtBearer = async (req, res, next) => {
     const auth = req.headers.authorization
 
     let token = auth.split(" ")[1]
@@ -21,3 +21,5 @@ export const jwtBearer = async (req, res, next) => {
         res.json(JsonResponse({}, 'Token Required', 401, 401))
     }
 }
+
+export default jwtBearer;

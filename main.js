@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 import authRouter from "./src/api/authApi.js"
 import todoRouter from "./src/api/todoApi.js";
 import logger from "./src/utils/logger.js";
-import {jwtBearer} from "./src/utils/dependency.js";
+import jwtBearer from "./src/utils/dependency.js";
 
 dotenv.config()
 
