@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import authRouter from "./src/api/authApi.js"
 import todoRouter from "./src/api/todoApi.js";
 import logger from "./src/utils/logger.js";
+import {jwtBearer} from "./src/utils/dependency.js";
 
 dotenv.config()
 
@@ -27,7 +28,7 @@ mongoose.connect(process.env.MONGODB, {
 
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/todo", todoRouter);
+app.use("/api/v1/todo", jwtBearer, todoRouter);
 
 
 app.listen(process.env.PORT, () => {

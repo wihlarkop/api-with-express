@@ -17,8 +17,6 @@ export const decodeJwt = function (token, expiration = true) {
 }
 
 
-export const encodeJwt = function (payload) {
-    return jwt.sign(payload, process.env.SECRET_KEY, {algorithm: "HS256"})
+export const encodeJwt = async function (payload) {
+    return await jwt.sign(payload, process.env.SECRET_KEY, {algorithm: "HS256"})
 }
-
-export default {generateAccessToken, decodeJwt};

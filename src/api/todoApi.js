@@ -1,12 +1,11 @@
 import Router from "express";
 import Todo from "../models/todoModel.js";
 import JsonResponse from "../utils/response.js"
-import jwtBearer from "../utils/dependency.js";
 
 const todoRouter = Router();
 
 
-todoRouter.get("/list", jwtBearer, async (req, res) => {
+todoRouter.get("/list", async (req, res) => {
     const data = await Todo.find({}).then(todo => {
         res.json(JsonResponse(todo))
     }).catch(err => {

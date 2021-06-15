@@ -1,13 +1,23 @@
-import decodeJwt from '../utils/token.js'
-import JsonResponse from "./response";
+import {decodeJwt} from './token.js'
+import JsonResponse from "./response.js";
 
-export const jwtBearer = (req, res, next) => {
-    const auth = req.header.authorization.split(" ")[1]
-    const decode = decodeJwt(auth).then(user => {
-        next()
-    }).catch(err => {
-        res.json(JsonResponse({}, 'Unauthorized', 401, 401))
-    })
+export const jwtBearer = async (req, res, next) => {
+    const auth = req.headers.authorization
+
+    let token = auth.split(" ")[1]
+
+    if (!token) {
+        token = auth
+    }
+
+    if (auth) {
+        try {
+            decodeJwt(token, true)
+            next()
+        } catch (err) {
+            res.json(JsonResponse({}, 'Unauthorized', 403, 403))
+        }
+    } else {
+        res.json(JsonResponse({}, 'Token Required', 401, 401))
+    }
 }
-
-export default jwtBearer;

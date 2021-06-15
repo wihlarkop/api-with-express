@@ -1,7 +1,7 @@
 import Bcrpyt from "bcrypt";
 import Router from "express";
 
-import generateAccessToken from "../utils/token.js"
+import {generateAccessToken} from "../utils/token.js"
 import JsonResponse from "../utils/response.js"
 import User from "../models/userModel.js";
 
