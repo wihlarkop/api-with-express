@@ -5,7 +5,7 @@ import express from "express";
 import mongoose from 'mongoose';
 
 import todoRouter from "./src/api/todoApi.js";
-import morganMiddleware from "./src/utils/middleware.js";
+import logger from "./src/utils/middleware.js";
 
 dotenv.config()
 
@@ -13,7 +13,7 @@ const app = express();
 
 app.use(cors())
 app.use(bodyParser.json())
-app.use(morganMiddleware)
+app.use(logger)
 
 mongoose.connect(process.env.MONGODB, {
         useUnifiedTopology: true,

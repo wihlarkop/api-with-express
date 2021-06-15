@@ -19,18 +19,24 @@ todoRouter.post('/add', (req, res) => {
         status: req.body.status
     })
 
-    todo.save().then(data => {
+    Todo.create(todo).then(data => {
         res.json(JsonResponse(data, 'Success Insert Data'))
     }).catch(err => {
         res.json(JsonResponse('', '', err, 400, 400))
     })
 })
 
-todoRouter.delete('/delete/:id', (req, res) => {
-    Todo.findOneAndDelete({'_id': req.params.id}).then(data => {
-        res.json(JsonResponse(data, 'Success Delete Data'))
+todoRouter.put("/edit/:id", async (req, res) => {
+    await Todo.updateOne({_id: req.params.id}, {"status": req.body.status}).then(data => {
+        res.json(JsonResponse(data))
+    })
+})
+
+todoRouter.delete("/delete/:id", (req, res) => {
+    Todo.findOneAndDelete({_id: req.params.id}).then(data => {
+        res.json(JsonResponse(data, "Success Delete Data"))
     }).catch(err => {
-        res.json(JsonResponse('', '', err, 400, 400))
+        res.json(JsonResponse("", "", err, 400, 400))
     })
 })
 

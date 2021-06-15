@@ -8,6 +8,10 @@ const TodoSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true
+    },
+    created: {
+        type: Date,
+        default: Date.now
     }
 })
 
