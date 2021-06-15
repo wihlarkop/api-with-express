@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import morgan from 'morgan';
+import morgan from "morgan";
 
 const logger = morgan(function (tokens, req, res) {
     return [

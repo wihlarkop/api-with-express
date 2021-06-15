@@ -8,7 +8,7 @@ const TodoSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: 'On Process'
+        default: "Incomplete"
     },
     created: {
         type: Date,
@@ -16,6 +16,6 @@ const TodoSchema = new mongoose.Schema({
     }
 })
 
-const Todo = mongoose.model('todo', TodoSchema)
+const Todo = mongoose.model("todo", TodoSchema)
 
 export default Todo;

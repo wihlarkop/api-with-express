@@ -2,10 +2,11 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
+import authRouter from "./src/api/authApi.js"
 import todoRouter from "./src/api/todoApi.js";
-import logger from "./src/utils/middleware.js";
+import logger from "./src/utils/logger.js";
 
 dotenv.config()
 
@@ -18,13 +19,15 @@ app.use(logger)
 mongoose.connect(process.env.MONGODB, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
+        useCreateIndex: true,
         connectTimeoutMS: 1000,
-        dbName: 'testingDb'
+        dbName: "testingDb"
     }
-).then(r => console.log('Mongodb Connected'));
+).then(r => console.log("Mongodb Connected"));
 
 
-app.use('/api/v1/todo', todoRouter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/todo", todoRouter);
 
 
 app.listen(process.env.PORT, () => {
