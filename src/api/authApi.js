@@ -45,23 +45,6 @@ authRouter.post("/login", async (req, res) => {
         .catch((result) => {
             res.json(JsonResponse({}, result, 400))
         })
-
-
-    // User.findOne({"username": uname}).then((user) => {
-    //     if (!user) {
-    //         res.json(JsonResponse({}, 'User Not Found'))
-    //     } else {
-    //         const check_password = Bcrpyt.compare(pwd, user.password)
-    //         if (!check_password) {
-    //             res.json(JsonResponse({}, "Wrong Password"))
-    //         } else {
-    //             const generateToken = generateAccessToken(user.username, user.created).then(token => {
-    //                 const data = {"token": token, "username": user.username}
-    //                 res.json(JsonResponse(data, "Success Login"))
-    //             })
-    //         }
-    //     }
-    // })
 })
 
 authRouter.post("/register", async (req, res) => {
