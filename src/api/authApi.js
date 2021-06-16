@@ -11,12 +11,12 @@ authRouter.post("/login", async (req, res) => {
     const uname = req.body.username
     const pwd = req.body.password
 
-    if (uname === undefined || uname === "") {
-        res.json(JsonResponse({}, "Username Required", 400))
+    if (uname === "") {
+        return res.json(JsonResponse({}, "Username Required", 400))
     }
 
-    if (pwd === undefined || pwd === "") {
-        res.json(JsonResponse({}, "Password Required", 400))
+    if (pwd === "") {
+        return res.json(JsonResponse({}, "Password Required", 400))
     }
 
     await User.findOne({"username": uname})
@@ -50,6 +50,14 @@ authRouter.post("/login", async (req, res) => {
 authRouter.post("/register", async (req, res) => {
     const uname = req.body.username
     const pwd = req.body.password
+
+    if (uname === "") {
+        return res.json(JsonResponse({}, "Username Required", 400))
+    }
+
+    if (pwd === "") {
+        return res.json(JsonResponse({}, "Password Required", 400))
+    }
     const hashing_password = Bcrpyt.hashSync(pwd, 10)
 
     const user = new User({
@@ -57,10 +65,15 @@ authRouter.post("/register", async (req, res) => {
         "password": hashing_password
     })
 
-    await User.create(user).then((user) => {
-        const token = generateAccessToken(user.username, user.created)
-        const data = {"token": token, "username": user.username}
-        res.json(JsonResponse(data, "Success Register"))
+    await User.create(user).then((result) => {
+        generateAccessToken(result.username, result.created)
+            .then((token) => {
+                const data = {"token": token, "username": result.username}
+                res.json(JsonResponse(data, "Success Register"))
+            }).catch((err) => {
+            res.json(JsonResponse("", "Failed To Register", 400, 400))
+        })
+
     }).catch(err => {
         res.json(JsonResponse("", "Email Has Registered", 400, 400))
     })
