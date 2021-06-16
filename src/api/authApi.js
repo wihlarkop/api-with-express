@@ -21,17 +21,13 @@ authRouter.post("/login", async (req, res) => {
 
     await User.findOne({"username": uname})
         .then((user) => {
-            if (!user) {
-                res.json(JsonResponse({}, 'User Not Found', 400))
-            }
+            if (!user) throw "User Not Found"
 
             const username = user.username
             const created = user.createdAt
             const check_password = Bcrpyt.compare(pwd, user.password)
                 .then((result) => {
-                    if (!result) {
-                        res.json(JsonResponse({}, "Wrong Password", 400))
-                    }
+                    if (!result) throw "Wrong Password"
 
                     generateAccessToken(username, created)
                         .then((token) => {
@@ -39,15 +35,15 @@ authRouter.post("/login", async (req, res) => {
                             res.json(JsonResponse(data, "Success Login", 200))
                         })
                         .catch(() => {
-                            res.json(JsonResponse({}, "Something Wrong, Please Try Again", 400))
+                            res.json(JsonResponse({}, "Unauthorized", 400))
                         })
                 })
-                .catch(() => {
-                    res.json(JsonResponse({}, "Something Wrong, Please Try Again", 400))
+                .catch((result) => {
+                    res.json(JsonResponse({}, result, 400))
                 })
         })
-        .catch(() => {
-            res.json(JsonResponse({}, "User Not Found", 400))
+        .catch((result) => {
+            res.json(JsonResponse({}, result, 400))
         })
 
 
