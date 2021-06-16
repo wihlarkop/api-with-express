@@ -38,15 +38,15 @@ authRouter.post("/login", async (req, res) => {
                             const data = {"token": token, "username": username}
                             res.json(JsonResponse(data, "Success Login", 200))
                         })
-                        .catch((err) => {
+                        .catch(() => {
                             res.json(JsonResponse({}, "Something Wrong, Please Try Again", 400))
                         })
                 })
-                .catch((err) => {
-                    res.status(400).json(JsonResponse({}, "Something Wrong, Please Try Again", 400))
+                .catch(() => {
+                    res.json(JsonResponse({}, "Something Wrong, Please Try Again", 400))
                 })
         })
-        .catch((err) => {
+        .catch(() => {
             res.json(JsonResponse({}, "User Not Found", 400))
         })
 
