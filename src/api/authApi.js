@@ -73,7 +73,6 @@ authRouter.post("/register", async (req, res) => {
             }).catch((err) => {
             res.json(JsonResponse("", "Failed To Register", 400, 400))
         })
-
     }).catch(err => {
         res.json(JsonResponse("", "Email Has Registered", 400, 400))
     })
