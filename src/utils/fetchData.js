@@ -1,24 +1,126 @@
 import axios from "axios";
 
-const todoList = async function (user_id) {
+const todosListByUser = async function (user_id) {
     let todos = []
 
-    if (user_id) {
-        await axios.get(`${process.env.BASE_URL}/todos?userId=${user_id}`)
-            .then(result => {
-                let todo = result.data
+    await axios.get(`${process.env.BASE_URL}/todos?userId=${user_id}`)
+        .then(result => {
+            let todo = result.data
 
+            if (todo) {
                 for (let us in todo) {
-                    const row = todo[us]
+                    const data = todo[us]
+
                     todos.push({
-                        "id": row.id,
-                        "title": row.title,
-                        "status": row.completed,
+                        "id": data.id,
+                        "title": data.title,
+                        "status": data.completed,
                     })
                 }
-            })
-    }
+            } else {
+                todos = []
+            }
+
+        })
     return todos;
+}
+
+const commentsListByPostUser = async function (post_id) {
+    let comments = []
+
+    await axios.get(`${process.env.BASE_URL}/comments?postId=${post_id}`)
+        .then(result => {
+            let comment = result.data
+
+            if (comment) {
+                for (let cmt in comment) {
+                    const data = comment[cmt]
+
+                    comments.push({
+                        "id": data.id,
+                        "name": data.title,
+                        "email": data.email,
+                        "body": data.body,
+                    })
+                }
+            } else {
+                comments = []
+            }
+        })
+    return comments;
+}
+
+const postsListByUser = async function (user_id) {
+    let posts = []
+
+    await axios.get(`${process.env.BASE_URL}/posts?userId=${user_id}`)
+        .then(async result => {
+            let post = result.data
+
+            if (post) {
+                for (let pst in post) {
+                    const data = post[pst]
+
+                    posts.push({
+                        "id": data.id,
+                        "title": data.title,
+                        "body": data.body,
+                        "comments": await commentListByPostUser(data.id)
+                    })
+                }
+            } else {
+                posts = []
+            }
+        })
+    return posts;
+}
+
+const photosListByAlbumUser = async function (album_id) {
+    let photos = []
+
+    await axios.get(`${process.env.BASE_URL}/photos?albumId=${album_id}`)
+        .then(async result => {
+            let photo = result.data
+
+            if (photo) {
+                for (let pst in photo) {
+                    const data = photo[pst]
+
+                    photos.push({
+                        "id": data.id,
+                        "title": data.title,
+                        "url": data.url,
+                        "thumbnailUrl": data.thumbnailUrl,
+                    })
+                }
+            } else {
+                photos = []
+            }
+        })
+    return photos;
+}
+
+const albumsListByUser = async function (user_id) {
+    let albums = []
+    await axios.get(`${process.env.BASE_URL}/albums?userId=${user_id}`)
+        .then(async result => {
+            let album = result.data
+
+            if (album) {
+                for (let pst in album) {
+                    const data = album[pst]
+
+                    albums.push({
+                        "id": data.id,
+                        "title": data.title,
+                        "photos": await photosListByAlbumUser(data.id)
+                    })
+                }
+            } else {
+                albums = []
+            }
+        })
+    return albums;
 }
 
 const userData = async function (user_id) {
@@ -37,7 +139,9 @@ const userData = async function (user_id) {
                     "phone": user.phone,
                     "address": (`${user.address.street}, ${user.address.city}`),
                     "company": user.company.name,
-                    "todos": await todoList(user_id)
+                    // "todos": await todoListByUser(user_id),
+                    // "posts": await postsListByUser(user_id)
+                    "albums": await albumsListByUser(user_id)
                 })
             })
     } else {
@@ -62,4 +166,4 @@ const userData = async function (user_id) {
 }
 
 
-export {todoList, userData};
+export {userData, todosListByUser, postsListByUser, commentsListByPostUser, albumsListByUser, photosListByAlbumUser};
