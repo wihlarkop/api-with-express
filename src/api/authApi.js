@@ -12,11 +12,11 @@ authRouter.post("/login", async (req, res) => {
     const pwd = req.body.password
 
     if (uname === "") {
-        return res.json(JsonResponse({}, "Username Required", 400))
+        return res.status(400).json(JsonResponse({}, "Username Required", 400))
     }
 
     if (pwd === "") {
-        return res.json(JsonResponse({}, "Password Required", 400))
+        return res.status(400).json(JsonResponse({}, "Password Required", 400))
     }
 
     await User.findOne({"username": uname})
@@ -32,18 +32,18 @@ authRouter.post("/login", async (req, res) => {
                     generateAccessToken(username, created)
                         .then((token) => {
                             const data = {"token": token, "username": username}
-                            res.json(JsonResponse(data, "Success Login", 200))
+                            return res.json(JsonResponse(data, "Success Login", 200))
                         })
                         .catch(() => {
-                            res.json(JsonResponse({}, "Unauthorized", 400))
+                            return res.status(400).json(JsonResponse({}, "Unauthorized", 400))
                         })
                 })
                 .catch((result) => {
-                    res.json(JsonResponse({}, result, 400))
+                    return res.status(400).json(JsonResponse({}, result, 400))
                 })
         })
         .catch((result) => {
-            res.json(JsonResponse({}, result, 400))
+            return res.status(400).json(JsonResponse({}, result, 400))
         })
 })
 
@@ -52,11 +52,11 @@ authRouter.post("/register", async (req, res) => {
     const pwd = req.body.password
 
     if (uname === "") {
-        return res.json(JsonResponse({}, "Username Required", 400))
+        return res.status(400).json(JsonResponse({}, "Username Required", 400))
     }
 
     if (pwd === "") {
-        return res.json(JsonResponse({}, "Password Required", 400))
+        return res.status(400).json(JsonResponse({}, "Password Required", 400))
     }
     const hashing_password = Bcrpyt.hashSync(pwd, 10)
 
@@ -69,12 +69,12 @@ authRouter.post("/register", async (req, res) => {
         generateAccessToken(result.username, result.created)
             .then((token) => {
                 const data = {"token": token, "username": result.username}
-                res.json(JsonResponse(data, "Success Register"))
+                return res.json(JsonResponse(data, "Success Register", 200))
             }).catch((err) => {
-            res.json(JsonResponse("", "Failed To Register", 400, 400))
+            return res.status(400).json(JsonResponse("", "Failed To Register", 400))
         })
     }).catch(err => {
-        res.json(JsonResponse("", "Email Has Registered", 400, 400))
+        return res.status(400).json(JsonResponse("", "Email Has Registered", 400))
     })
 })
 

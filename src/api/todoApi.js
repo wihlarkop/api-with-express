@@ -7,9 +7,9 @@ const todoRouter = Router();
 
 todoRouter.get("/list", async (req, res) => {
     const data = await Todo.find({}).then(todo => {
-        res.json(JsonResponse(todo))
+        return res.json(JsonResponse(todo))
     }).catch(err => {
-        res.json(JsonResponse("", "Failed to fetch data", 400, 400))
+        return res.json(JsonResponse("", "Failed to fetch data", 400, 400))
     })
 })
 
@@ -19,25 +19,25 @@ todoRouter.post("/add", async (req, res) => {
     })
 
     await Todo.create(todo).then(data => {
-        res.json(JsonResponse(data, "Success Insert Data"))
+        return res.json(JsonResponse(data, "Success Insert Data"))
     }).catch(err => {
-        res.json(JsonResponse("", "Failed To Insert Data", 400, 400))
+        return res.json(JsonResponse("", "Failed To Insert Data", 400, 400))
     })
 })
 
 todoRouter.put("/edit/:id", async (req, res) => {
     await Todo.updateOne({_id: req.params.id}, {"status": "Complete"}).then(data => {
-        res.json(JsonResponse(data, "Success Update Data"))
+        return res.json(JsonResponse(data, "Success Update Data"))
     }).catch(err => {
-        res.json(JsonResponse("", "Failed To Edit Data", 400, 400))
+        return res.json(JsonResponse("", "Failed To Edit Data", 400, 400))
     })
 })
 
 todoRouter.delete("/delete/:id", async (req, res) => {
     await Todo.findOneAndDelete({_id: req.params.id}).then(data => {
-        res.json(JsonResponse(data, "Success Delete Data"))
+        return res.json(JsonResponse(data, "Success Delete Data"))
     }).catch(err => {
-        res.json(JsonResponse("", "Failed To Delete", 400, 400))
+        return res.json(JsonResponse("", "Failed To Delete", 400, 400))
     })
 })
 
