@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 
 export const generateAccessToken = async function (username, created) {
     const TOKEN_EXP = 3 * 60 * 60
-
     const expiration = Date.now() + TOKEN_EXP
     const payload = {
         "username": username,

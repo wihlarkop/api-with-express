@@ -1,4 +1,5 @@
 import Router from "express";
+
 import Todo from "../models/todoModel.js";
 import JsonResponse from "../utils/response.js"
 
@@ -6,8 +7,17 @@ const todoRouter = Router();
 
 
 todoRouter.get("/list", async (req, res) => {
-    const data = await Todo.find({}).then(todo => {
-        return res.json(JsonResponse(todo))
+    let todos = []
+
+    await Todo.find({}).then(todo => {
+        todo.forEach(data => {
+            todos.push({
+                "id": data.id,
+                "title": data.title,
+                "status": data.status,
+            })
+        })
+        return res.json(JsonResponse(todos, "Success Get Data", 200))
     }).catch(err => {
         return res.json(JsonResponse("", "Failed to fetch data", 400, 400))
     })
