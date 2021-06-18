@@ -4,11 +4,14 @@ import express from "express";
 import mongoose from "mongoose";
 
 import authRouter from "./src/api/authApi.js"
+import diaryRouter from "./src/api/diaryApi.js";
 import fetchRouter from "./src/api/fetchApi.js";
 import todoRouter from "./src/api/todoApi.js";
 
 import logger from "./src/utils/logger.js";
 import jwtBearer from "./src/utils/dependency.js";
+import JsonResponse from "./src/utils/response.js";
+
 
 dotenv.config()
 
@@ -27,8 +30,12 @@ mongoose.connect(process.env.MONGODB, {
     }
 ).then(r => console.log("Mongodb Connected"));
 
+app.get('/api/v1/alive', (req, res) => {
+    res.json(JsonResponse('alive'))
+})
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/diary", diaryRouter);
 app.use("/api/v1/todo", jwtBearer, todoRouter);
 app.use("/api/v1/fetch", fetchRouter)
 

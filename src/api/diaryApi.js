@@ -7,7 +7,7 @@ const diaryRouter = Router();
 
 diaryRouter.get('/list', async (req, res) => {
     const data = await Diary.find({}).then(diaries => {
-        res.json(JsonResponse(diaries, "", 200, 200))
+        res.json(JsonResponse(diaries, "Success get data", 200, 200))
     }).catch(err => {
         res.json(JsonResponse("", "Failed to fetch data", 400, 400))
     })

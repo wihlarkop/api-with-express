@@ -8,19 +8,16 @@ const todosListByUser = async function (user_id) {
             let todo = result.data
 
             if (todo) {
-                for (let us in todo) {
-                    const data = todo[us]
-
+                todo.forEach(data => {
                     todos.push({
                         "id": data.id,
                         "title": data.title,
                         "status": data.completed,
                     })
-                }
+                })
             } else {
                 todos = []
             }
-
         })
     return todos;
 }
@@ -33,16 +30,14 @@ const commentsListByPostUser = async function (post_id) {
             let comment = result.data
 
             if (comment) {
-                for (let cmt in comment) {
-                    const data = comment[cmt]
-
+                comment.forEach(data => {
                     comments.push({
                         "id": data.id,
                         "name": data.title,
                         "email": data.email,
                         "body": data.body,
                     })
-                }
+                })
             } else {
                 comments = []
             }
@@ -65,7 +60,7 @@ const postsListByUser = async function (user_id) {
                         "id": data.id,
                         "title": data.title,
                         "body": data.body,
-                        "comments": await commentListByPostUser(data.id)
+                        "comments": await commentsListByPostUser(data.id)
                     })
                 }
             } else {
@@ -83,16 +78,15 @@ const photosListByAlbumUser = async function (album_id) {
             let photo = result.data
 
             if (photo) {
-                for (let pst in photo) {
-                    const data = photo[pst]
-
+                photo.forEach(data => {
                     photos.push({
                         "id": data.id,
                         "title": data.title,
                         "url": data.url,
                         "thumbnailUrl": data.thumbnailUrl,
                     })
-                }
+                })
+
             } else {
                 photos = []
             }
@@ -102,6 +96,7 @@ const photosListByAlbumUser = async function (album_id) {
 
 const albumsListByUser = async function (user_id) {
     let albums = []
+
     await axios.get(`${process.env.BASE_URL}/albums?userId=${user_id}`)
         .then(async result => {
             let album = result.data
@@ -139,7 +134,7 @@ const userData = async function (user_id) {
                     "phone": user.phone,
                     "address": (`${user.address.street}, ${user.address.city}`),
                     "company": user.company.name,
-                    // "todos": await todoListByUser(user_id),
+                    "todos": await todosListByUser(user_id),
                     // "posts": await postsListByUser(user_id)
                     // "albums": await albumsListByUser(user_id)
                 })
@@ -147,19 +142,19 @@ const userData = async function (user_id) {
     } else {
         await axios.get(`${process.env.BASE_URL}/users`)
             .then(async result => {
+                const user = result.data
 
-                for (let us in result.data) {
-                    const row = result.data[us]
+                user.forEach(usr => {
                     data.push({
-                        "id": row.id,
-                        "username": row.username,
-                        "email": row.email,
-                        "name": row.name,
-                        "phone": row.phone,
-                        "address": (`${row.address.street}, ${row.address.city}`),
-                        "company": row.company.name
+                        "id": usr.id,
+                        "username": usr.username,
+                        "email": usr.email,
+                        "name": usr.name,
+                        "phone": usr.phone,
+                        "address": (`${usr.address.street}, ${usr.address.city}`),
+                        "company": usr.company.name
                     })
-                }
+                })
             })
     }
     return data
