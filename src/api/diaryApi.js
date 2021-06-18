@@ -1,3 +1,4 @@
+import moment from "moment";
 import Router from "express";
 
 import Diary from "../models/diaryModel.js";
@@ -13,7 +14,7 @@ diaryRouter.get('/list', async (req, res) => {
         diary.forEach(data => {
             diaries.push({
                 "id": data.id,
-                "date": data.date,
+                "date": moment(data.date).format("YYYY-MM-DD"),
                 "post": data.post
             })
         })
