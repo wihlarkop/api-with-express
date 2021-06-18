@@ -5,13 +5,13 @@ import {userData} from "../utils/fetchData.js";
 
 const fetchRouter = Router();
 
-fetchRouter.get('/user/list', async (req, res) => {
+fetchRouter.get('/jph/user/list', async (req, res) => {
     const data = await userData()
 
     return res.json(JsonResponse(data, "Success Fetch Data", 200))
 })
 
-fetchRouter.get('/user/:id/detail', async (req, res) => {
+fetchRouter.get('/jph/user/:id/detail', async (req, res) => {
     const user_id = req.params.id
 
     const data = await userData(user_id)

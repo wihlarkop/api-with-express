@@ -141,7 +141,7 @@ const userData = async function (user_id) {
                     "company": user.company.name,
                     // "todos": await todoListByUser(user_id),
                     // "posts": await postsListByUser(user_id)
-                    "albums": await albumsListByUser(user_id)
+                    // "albums": await albumsListByUser(user_id)
                 })
             })
     } else {
