@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongod.conf:/etc/mongod.conf
+      - /mongo-entrypoint:/docker-entrypoint-initdb.d
+    environment:
+      MONGO_INITDB_DATABASE: testingExpress
+      MONGO_INITDB_ROOT_USERNAME: express
+      MONGO_INITDB_ROOT_PASSWORD: admin
