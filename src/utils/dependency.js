@@ -12,7 +12,7 @@ const jwtBearer = async (req, res, next) => {
 
     if (auth) {
         try {
-            decodeJwt(token, true)
+            await decodeJwt(token, process.env.ACCESS_TOKEN_SECRET_KEY, false)
             next()
         } catch (err) {
             res.json(JsonResponse({}, 'Unauthorized', 403, 403))
@@ -21,5 +21,6 @@ const jwtBearer = async (req, res, next) => {
         res.json(JsonResponse({}, 'Token Required', 401, 401))
     }
 }
+
 
 export default jwtBearer;

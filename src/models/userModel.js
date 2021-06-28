@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -22,6 +22,22 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
-const User = mongoose.model("user", UserSchema)
+const userTokenSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    token: {
+        type: String,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+})
 
-export default User;
+const User = mongoose.model("user", userSchema)
+const UserToken = mongoose.model("userToken", userTokenSchema)
+
+export {User, UserToken};
