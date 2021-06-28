@@ -3,14 +3,14 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 
-import authRouter from "./src/api/authApi.js"
-import diaryRouter from "./src/api/diaryApi.js";
-import fetchRouter from "./src/api/fetchApi.js";
-import todoRouter from "./src/api/todoApi.js";
+import authRouter from "./api/authApi.js"
+import diaryRouter from "./api/diaryApi.js";
+import fetchRouter from "./api/fetchApi.js";
+import todoRouter from "./api/todoApi.js";
 
-import logger from "./src/utils/logger.js";
-import jwtBearer from "./src/utils/dependency.js";
-import JsonResponse from "./src/utils/response.js";
+import logger from "./utils/logger.js";
+import jwtBearer from "./utils/dependency.js";
+import JsonResponse from "./utils/response.js";
 
 
 dotenv.config()
